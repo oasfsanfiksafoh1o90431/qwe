@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Probability Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-image: url('https://img.freepik.com/free-vector/hand-drawn-scientific-formulas-chalkboard_23-2148496321.jpg?size=626&ext=jpg&ga=GA1.1.1141335507.1717718400&semt=ais_user');
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1 {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin: 10px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+
+        input[type="text"] {
+            padding: 8px;
+            font-size: 18px;
+            width: 200px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Probability Calculator</h1>
+        <div class="input-group">
+            <label for="x">x:</label>
+            <input type="text" id="x">
+        </div>
+        <div class="input-group">
+            <label for="mean">Mean:</label>
+            <input type="text" id="mean">
+        </div>
+        <div class="input-group">
+            <label for="stdDev">Standard Deviation:</label>
+            <input type="text" id="stdDev">
+        </div>
+        <button id="calculateButton">Calculate</button>
+        <div class="input-group">
+            <label for="probability">Probability:</label>
+            <input type="text" id="probability" readonly>
+        </div>
+        <div class="input-group">
+            <label for="variance">Variance:</label>
+            <input type="text" id="variance" readonly>
+        </div>
+    </div>
+    <script>
+        document.getElementById('calculateButton').addEventListener('click', function() {
+            var x = parseFloat(document.getElementById('x').value);
+            var mean = parseFloat(document.getElementById('mean').value);
+            var stdDev = parseFloat(document.getElementById('stdDev').value);
+
+            if (isNaN(x) || isNaN(mean) || isNaN(stdDev)) {
+                alert('Please enter valid numbers.');
+                return;
+            }
+
+            var zScore = (x - mean) / stdDev;
+            var probability = calculateNormalProbability(zScore);
+            var variance = stdDev ** 2; 
+
+            document.getElementById('probability').value = probability.toFixed(4);
+            document.getElementById('variance').value = variance.toFixed(4); 
+        });
+
+        function calculateNormalProbability(z) {
+            return 0.5 * (1 + erf(z / Math.sqrt(2)));
+        }
+
+        function erf(z) {
+            var t = 1.0 / (1.0 + 0.5 * Math.abs(z));
+            var ans = 1 - t * Math.exp(-z * z - 1.26551223 + 
+                        t * (1.00002368 + t * (0.37409196 + t * (0.09678418 +
+                        t * (-0.18628806 + t * (0.27886807 + t * (-1.13520398 +
+                        t * (1.48851587 + t * (-0.82215223 + t * 0.17087277)))))))));
+            return z >= 0 ? ans : -ans;
+        }
+    </script>
+</body>
+</html>
